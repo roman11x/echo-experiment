@@ -1,0 +1,140 @@
+/* css/echo.css — the "Echo" look, taken from the Canva deck */
+
+/* ---- Palette (from the deck) ------------------------------------------- */
+:root {
+  --page: #e6eefa;       /* page background */
+  --card: #ffffff;       /* post cards */
+  --border: #c9d6ea;     /* thin card border */
+  --panel: #f1f5fc;      /* inner panels */
+  --text: #0f1b2d;       /* main text */
+  --muted: #697688;      /* handles, meta, hints */
+  --accent: #1560d4;     /* Echo blue */
+  --true: #0b7044;       /* green = True (always with a text label) */
+  --false: #c4203d;      /* red = Not true (always with a text label) */
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+body {
+  background: var(--page);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+/* ---- Header ------------------------------------------------------------ */
+.topbar {
+  position: sticky; top: 0; z-index: 5;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 12px 16px;
+  background: rgba(230, 238, 250, .92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; letter-spacing: -.02em; }
+.brand-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); }
+.tabs { display: flex; gap: 18px; font-size: .95rem; color: var(--muted); }
+.tab.active { color: var(--text); font-weight: 700; box-shadow: inset 0 -3px 0 var(--accent); padding-bottom: 6px; }
+.counter { justify-self: end; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* On narrow phones the tabs would crowd the header; hide them. */
+@media (max-width: 380px) { .tabs { display: none; } .topbar { grid-template-columns: 1fr 1fr; } }
+
+/* ---- Feed column ------------------------------------------------------- */
+.feed { max-width: 520px; margin: 0 auto; padding: 20px 16px 40px; }
+
+/* ---- Post card --------------------------------------------------------- */
+.post {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px 14px;
+  /* the faint "second card" peeking out below, as in the deck */
+  box-shadow: 0 6px 0 -1px #f6f9fe, 0 6px 0 0 var(--border), 0 10px 24px rgba(21, 96, 212, .06);
+  touch-action: pan-y;               /* vertical scroll stays native, horizontal = swipe */
+  user-select: none;
+  transition: transform .25s ease, opacity .25s ease;
+  overflow: hidden;
+}
+.post.dragging { transition: none; cursor: grabbing; }
+.post.fly-right { transform: translateX(130%) rotate(18deg) !important; opacity: 0; }
+.post.fly-left  { transform: translateX(-130%) rotate(-18deg) !important; opacity: 0; }
+
+.post-head { display: flex; align-items: center; gap: 12px; }
+.avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: .95rem; flex-shrink: 0;
+}
+.who { display: flex; flex-direction: column; min-width: 0; }
+.name { font-weight: 700; }
+.meta { color: var(--muted); font-size: .9rem; }
+.dots { margin-left: auto; color: var(--muted); letter-spacing: 1px; }
+
+.post-text { font-size: 1.35rem; font-weight: 700; line-height: 1.35; letter-spacing: -.01em; margin: 16px 2px 18px; }
+
+/* Minimum-view timer: a thin bar that fills, then disappears when answering unlocks. */
+.timer { height: 4px; border-radius: 4px; background: var(--panel); overflow: hidden; }
+.timer-fill { height: 100%; width: 0; background: var(--accent); animation: fill linear forwards; }
+.post.ready .timer { visibility: hidden; }
+@keyframes fill { to { width: 100%; } }
+
+/* Labels that appear on the card while dragging, so swiping is never colour-only. */
+.stamp {
+  position: absolute; top: 50%; z-index: 2; padding: 6px 12px; border-radius: 10px;
+  font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: .04em;
+  border: 3px solid currentColor; background: #fff; box-shadow: 0 4px 14px rgba(15, 27, 45, .12);
+  opacity: 0; transition: opacity .1s; pointer-events: none;
+}
+/* Centred on the side you're moving away from, slightly tilted like a stamp. */
+.stamp-left  { right: 16px; transform: translateY(-50%) rotate(8deg); }
+.stamp-right { left: 16px;  transform: translateY(-50%) rotate(-8deg); }
+.post[data-lean="left"]  .stamp-left,
+.post[data-lean="right"] .stamp-right { opacity: 1; }
+
+/* ---- Answer buttons ---------------------------------------------------- */
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+.btn {
+  font: inherit; font-weight: 700; font-size: 1.05rem;
+  padding: 14px 12px; border-radius: 999px; cursor: pointer;
+  border: 2px solid transparent; transition: opacity .2s, transform .05s;
+}
+.btn:active:not(:disabled) { transform: scale(.98); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-wide { width: 100%; margin-top: 8px; }
+
+.btn-neutral { background: var(--card); color: var(--text); border-color: var(--border); }
+.btn-like    { background: var(--accent); color: #fff; }
+.btn-true    { background: var(--true); color: #fff; }
+.btn-false   { background: var(--card); color: var(--false); border-color: var(--false); }
+
+/* Stamp colours per phase follow the button colours. */
+.post .stamp-right { color: var(--accent); }
+.post .stamp-left  { color: var(--muted); }
+.mode-p2 .stamp-right { color: var(--true); }
+.mode-p2 .stamp-left  { color: var(--false); }
+
+.hint { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 14px; }
+
+/* ---- Notice screens (intro, wait, done) -------------------------------- */
+.notice h1 { font-size: 1.5rem; letter-spacing: -.02em; margin: 4px 0 10px; }
+.notice p { line-height: 1.5; }
+.muted { color: var(--muted); }
+.small { font-size: .9rem; }
+.t-true { color: var(--true); }
+.t-false { color: var(--false); }
+
+/* ---- Wrapped card ------------------------------------------------------ */
+.wrapped { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+.wrap-row { background: var(--panel); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 2px; }
+.wrap-label { font-size: .85rem; color: var(--muted); font-weight: 600; }
+.wrap-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+.wrap-num small { font-size: 1rem; color: var(--muted); font-weight: 600; }
+.wrap-sub { font-size: .85rem; color: var(--muted); }
+
+/* ---- Test-mode reset --------------------------------------------------- */
+.reset { position: fixed; bottom: 10px; right: 10px; font: inherit; font-size: .8rem; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: #fff; color: var(--muted); }
