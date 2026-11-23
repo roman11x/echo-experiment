@@ -77,12 +77,14 @@ export const STATEMENTS = [
 // The poster is chosen by position in the feed, not by statement, so the same
 // statement can appear from a different account in Phase 2 (only the text repeats).
 export const POSTERS = [
-  { name: "Maya Levi",    handle: "mayal",       color: "#1560d4" },
-  { name: "Daily Trivia", handle: "dailytrivia", color: "#5b6b82" },
-  { name: "Noam K.",      handle: "noamk",       color: "#2f7fe0" },
-  { name: "Fact Corner",  handle: "factcorner",  color: "#3a4a63" },
-  { name: "Shira B.",     handle: "shirab",      color: "#0e4fae" },
-  { name: "Did You Know", handle: "didyouknow",  color: "#7a8799" },
-  { name: "Tal Cohen",    handle: "talc",        color: "#1f6fcf" },
-  { name: "Quick Facts",  handle: "quickfacts",  color: "#44546d" },
+  // img: path to the avatar picture. People = AI-generated faces (no real person),
+  // pages = simple logos. If an image is missing, the initials are shown instead.
+  { name: "Maya Levi",    handle: "mayal",       color: "#1560d4", img: "assets/avatars/maya.jpg" },
+  { name: "Daily Trivia", handle: "dailytrivia", color: "#5b6b82", img: "assets/avatars/dailytrivia.svg" },
+  { name: "Noam K.",      handle: "noamk",       color: "#2f7fe0", img: "assets/avatars/noam.jpg" },
+  { name: "Fact Corner",  handle: "factcorner",  color: "#3a4a63", img: "assets/avatars/factcorner.svg" },
+  { name: "Shira B.",     handle: "shirab",      color: "#0e4fae", img: "assets/avatars/shira.jpg" },
+  { name: "Did You Know", handle: "didyouknow",  color: "#7a8799", img: "assets/avatars/didyouknow.svg" },
+  { name: "Tal Cohen",    handle: "talc",        color: "#1f6fcf", img: "assets/avatars/tal.jpg" },
+  { name: "Quick Facts",  handle: "quickfacts",  color: "#44546d", img: "assets/avatars/quickfacts.svg" },
 ];

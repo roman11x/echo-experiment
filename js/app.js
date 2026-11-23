@@ -10,7 +10,7 @@
 
 import { STATEMENTS, POSTERS } from "../data/statements.js";
 import { MIN_VIEW_MS_P1, MIN_VIEW_MS_P2, STORAGE_KEY } from "./config.js";
-import { showPost, initials } from "./feed.js";
+import { showPost, avatarHTML } from "./feed.js";
 import {
   auth, db, sessionRef, participantRef, currentUser, signInAnonymously,
   getDoc, updateDoc, onSnapshot, runTransaction, serverTimestamp,
@@ -85,7 +85,7 @@ function notice({ title, body, button }) {
 // Decorative "stories" row built from the fictional accounts.
 function renderStories() {
   document.getElementById("stories").innerHTML = POSTERS.map((p) => `
-    <div class="story"><div class="story-ring"><div class="avatar" style="background:${p.color}">${initials(p.name)}</div></div>
+    <div class="story"><div class="story-ring">${avatarHTML(p)}</div>
     <span>${p.name.split(" ")[0]}</span></div>`).join("");
 }
 

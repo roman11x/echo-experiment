@@ -79,10 +79,12 @@ svg { width: 22px; height: 22px; }
 
 .post-head { display: flex; align-items: center; gap: 12px; }
 .avatar {
+  position: relative; overflow: hidden;   /* the picture is clipped to the circle */
   width: 44px; height: 44px; border-radius: 50%;
   display: grid; place-items: center;
   color: #fff; font-weight: 700; font-size: .95rem; flex-shrink: 0;
 }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .who { display: flex; flex-direction: column; min-width: 0; gap: 2px; }
 .name { font-weight: 700; }
 .meta { color: var(--muted); font-size: .9rem; }

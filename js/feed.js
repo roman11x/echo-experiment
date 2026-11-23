@@ -33,6 +33,12 @@ const esc = (s) =>
 // Initials for the round avatar: "Maya Levi" -> "ML".
 export const initials = (name) => name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
+// Round avatar: the picture sits on top of the initials; if the picture
+// can't load, onerror removes it and the initials underneath show instead.
+export const avatarHTML = (p, cls = "avatar") => `
+  <div class="${cls}" style="background:${p.color}">${esc(initials(p.name))}${
+    p.img ? `<img src="${p.img}" alt="" onerror="this.remove()">` : ""}</div>`;
+
 /**
  * Render one post into `root`, its buttons into `bar`, and resolve with
  * { answer, rt } once answered.
@@ -54,7 +60,7 @@ export function showPost({ root, bar, statement, poster, mode, minMs }) {
         <div class="stamp stamp-right">${esc(m.right.label)}</div>
         <div class="heart-pop" aria-hidden="true">♥</div>
         <header class="post-head">
-          <div class="avatar" style="background:${poster.color}">${esc(initials(poster.name))}</div>
+          ${avatarHTML(poster)}
           <div class="who">
             <span class="name">${esc(poster.name)}</span>
             <span class="meta">@${esc(poster.handle)} · ${1 + Math.floor(Math.random() * 11)}h</span>
