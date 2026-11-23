@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Proper scaling on phones; no zoom-on-double-tap delays -->
+  <!-- Proper scaling on phones -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#e6eefa">
   <title>Echo</title>
@@ -11,7 +11,7 @@
   <!-- Inter: closest free match to the deck's bold sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/echo.css">
 </head>
 <body>
@@ -25,11 +25,22 @@
     <div class="counter" id="counter"></div>
   </header>
 
-  <!-- Every screen (intro, posts, waiting, results) is drawn in here by js/app.js -->
+  <!-- "Stories" row of accounts: decoration only, filled in by js/app.js -->
+  <div class="stories" id="stories" aria-hidden="true"></div>
+
+  <!-- Every screen (intro, posts, waiting, done) is drawn in here by js/app.js -->
   <main id="main" class="feed"></main>
 
-  <!-- Only visible in test mode (?dev=1) -->
-  <button id="reset" class="reset" hidden>Reset (test)</button>
+  <!-- Bottom of the screen: answer buttons sit just above the app's nav bar -->
+  <footer class="bottom">
+    <div class="answer-bar" id="bar"></div>
+    <nav class="navbar" aria-hidden="true">
+      <span class="nav-item active"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z" fill="currentColor"/></svg>Home</span>
+      <span class="nav-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search</span>
+      <span class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Alerts</span>
+      <span class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="2"/></svg>Profile</span>
+    </nav>
+  </footer>
 
   <!-- type="module" lets the JS files import each other without a build step -->
   <script type="module" src="js/app.js"></script>

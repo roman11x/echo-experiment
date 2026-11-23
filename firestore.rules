@@ -1,0 +1,63 @@
+rules_version = '2';
+
+// Security Rules for the Echo experiment.
+// Paste this whole file into: Firebase console → Firestore Database → Rules → Publish.
+//
+// Who can do what:
+//  - Presenters (two Google accounts): everything on sessions + read all participants.
+//  - Participants (anonymous sign-in): read the session doc (to follow the phase),
+//    create/update ONLY their own participant doc, never someone else's,
+//    and never change their list, late flag, post order, or an answer they already gave.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['romanmax1000@gmail.com', 'adibelso3357@gmail.com'];
+    }
+
+    function sess(sid) { return get(/databases/$(database)/documents/sessions/$(sid)).data; }
+
+    // Existing answers (keys in the p1/p2 maps) may be added to, but never changed or removed.
+    function answersOnlyGrow(field) {
+      return !(field in resource.data)
+        || request.resource.data[field].diff(resource.data[field]).changedKeys().size() == 0
+           && request.resource.data[field].diff(resource.data[field]).removedKeys().size() == 0;
+    }
+
+    match /sessions/{sid} {
+      allow read: if signedIn();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        // A participant joining may bump countA or countB by exactly 1,
+        // and only in the same transaction that creates their own participant doc.
+        || (signedIn()
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['countA', 'countB'])
+            && request.resource.data.countA + request.resource.data.countB
+               == resource.data.countA + resource.data.countB + 1
+            && !exists(/databases/$(database)/documents/sessions/$(sid)/participants/$(request.auth.uid))
+            && existsAfter(/databases/$(database)/documents/sessions/$(sid)/participants/$(request.auth.uid)));
+
+      match /participants/{uid} {
+        allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+        allow delete: if isAdmin();
+
+        allow create: if signedIn() && request.auth.uid == uid
+          && sess(sid).phase in ['p1', 'wait', 'p2']
+          && request.resource.data.list in ['A', 'B']
+          && request.resource.data.late == (sess(sid).phase != 'p1');
+
+        allow update: if signedIn() && request.auth.uid == uid
+          && sess(sid).phase in ['p1', 'wait', 'p2']
+          && !request.resource.data.diff(resource.data).affectedKeys()
+                .hasAny(['list', 'late', 'order1', 'order2', 'joinedAt'])
+          && answersOnlyGrow('p1')
+          && answersOnlyGrow('p2');
+      }
+    }
+  }
+}

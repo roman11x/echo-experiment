@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Echo · class results</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231560d4'/%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/echo.css">
+</head>
+<body class="console results-page">
+  <header class="topbar">
+    <div class="brand"><span class="brand-dot"></span>Echo <span class="tag">class results</span></div>
+    <div></div>
+    <div class="counter" id="sessionTag"></div>
+  </header>
+
+  <main class="results-main">
+    <section class="post" id="auth"></section>
+
+    <div id="panel" hidden>
+      <!-- Before the reveal: only the response count is visible -->
+      <section class="post waiting" id="waiting">
+        <p class="muted">Responses so far</p>
+        <div class="big-count" id="count">0</div>
+        <p class="muted" id="countSub"></p>
+        <button class="btn btn-true" id="reveal">Reveal results</button>
+      </section>
+
+      <!-- After the reveal -->
+      <section id="results" hidden>
+        <article class="post">
+          <h1 class="res-title">How often did we say "true"?</h1>
+          <div class="legend">
+            <span><i class="sw sw-rep"></i>Posts seen in part 1</span>
+            <span><i class="sw sw-new"></i>New posts</span>
+          </div>
+          <div class="chart" id="mainChart"></div>
+          <p class="muted small" id="nNote"></p>
+        </article>
+
+        <div class="res-grid">
+          <article class="post">
+            <h2>By how well-known the fact is</h2>
+            <p class="muted small">"Known" was estimated by us, as Fazio's Exp. 2 did with norms. Small numbers: noisy.</p>
+            <div class="chart small-chart" id="knownChart"></div>
+          </article>
+          <article class="post">
+            <h2>True vs false statements</h2>
+            <p class="muted small">Small numbers: noisy.</p>
+            <div class="chart small-chart" id="truthChart"></div>
+          </article>
+        </div>
+        <button class="link" id="hide">Hide results</button>
+      </section>
+    </div>
+  </main>
+
+  <div class="tooltip" id="tip" hidden></div>
+  <script type="module" src="js/results.js"></script>
+</body>
+</html>

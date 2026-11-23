@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Echo · presenter controls</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231560d4'/%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/echo.css">
+</head>
+<body class="console">
+  <header class="topbar">
+    <div class="brand"><span class="brand-dot"></span>Echo <span class="tag">presenter</span></div>
+    <div></div>
+    <div class="counter" id="sessionTag"></div>
+  </header>
+
+  <main class="feed">
+    <!-- Sign-in box (filled by admin-auth.js) -->
+    <section class="post" id="auth"></section>
+
+    <!-- Everything below appears only for presenter accounts -->
+    <div id="panel" hidden>
+      <section class="post">
+        <h2>Phase</h2>
+        <p class="phase-now">Now: <b id="phase">–</b> · Results <b id="revealed">–</b></p>
+        <div class="control-grid">
+          <button class="btn btn-like" data-phase="p1">Open part 1</button>
+          <button class="btn btn-neutral" data-phase="wait">Close part 1 (talk)</button>
+          <button class="btn btn-like" data-phase="p2">Open part 2</button>
+          <button class="btn btn-neutral" data-phase="closed">Close everything</button>
+        </div>
+        <button class="btn btn-true btn-wide" id="reveal">Reveal results</button>
+        <p class="muted small">Participant link: <a id="plink" target="_blank"></a></p>
+      </section>
+
+      <section class="post">
+        <h2>Participants</h2>
+        <div class="stat-row" id="stats"></div>
+        <table class="ptable"><thead><tr><th>id</th><th>list</th><th>stage</th><th>part 1</th><th>part 2</th><th></th></tr></thead>
+          <tbody id="ptable"></tbody></table>
+      </section>
+
+      <section class="post">
+        <h2>Data</h2>
+        <div class="control-grid">
+          <button class="btn btn-neutral" id="csv">Download CSV</button>
+          <button class="btn btn-neutral" id="json">Download JSON</button>
+        </div>
+        <button class="btn btn-false btn-wide" id="reset">Reset this session (deletes all answers)</button>
+        <p class="muted small">Rehearse on <code>?session=test</code>; the class uses the default <code>live</code> session.</p>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
