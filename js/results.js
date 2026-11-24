@@ -33,7 +33,7 @@ function bars(el, groups, { reference } = {}) {
       <div class="bars">
         ${[["new", "New", g.new], ["rep", "Repeated", g.repeated]].map(([cls, name, v]) => `
           <div class="bar-col" data-tip="${name}: ${v.pct ?? "–"}% said true (${v.nLabel || `${v.n} judgments`})">
-            <div class="bar bar-${cls}" style="height:${v.pct ?? 0}%"><span class="bar-val">${v.pct ?? "–"}%</span></div>
+            <div class="bar bar-${cls}" style="height:${v.pct ?? 0}%"><span class="bar-val">${v.pct ?? "–"}%</span>${(v.pct ?? 0) >= 12 ? `<span class="bar-tag">${cls === "new" ? "New" : "Rep."}</span>` : ""}</div>
           </div>`).join("")}
       </div>
       <div class="group-label">${g.label}</div>
