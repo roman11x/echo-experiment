@@ -24,7 +24,7 @@ export const STATEMENTS = [
   // true · known
   { id: "s01", text: "Mount Everest is the highest mountain in the world above sea level.", truth: true, known: "known", set: "X" },
   { id: "s02", text: "The blue whale is the largest animal alive in the world today.", truth: true, known: "known", set: "X" },
-  { id: "s03", text: "Canberra is the capital city of Australia.", truth: true, known: "known", set: "X" },
+  { id: "s03", text: "A diamond is a very hard crystal made of carbon.", truth: true, known: "known", set: "X" },   // replaced Canberra: both pilots rejected it (people think Sydney)
   { id: "s04", text: "The Mona Lisa was painted by the Italian artist Leonardo da Vinci.", truth: true, known: "known", set: "X" },
   // true · unknown
   { id: "s05", text: "Thimphu is the capital city of the small Asian country Bhutan.", truth: true, known: "unknown", set: "X" },
