@@ -29,9 +29,9 @@ $("hide").onclick = () => updateDoc(sessionRef, { revealed: false });
 // Values are printed on the bars, so colour never carries the meaning alone.
 function bars(el, groups, { reference } = {}) {
   el.innerHTML = groups.map((g) => `
-    <div class="group${g.key === "known-false" ? " key-group" : ""}">
+    <div class="group">
       <div class="bars">
-        ${[["rep", "Seen in part 1", g.repeated], ["new", "New", g.new]].map(([cls, name, v]) => `
+        ${[["new", "New", g.new], ["rep", "Repeated", g.repeated]].map(([cls, name, v]) => `
           <div class="bar-col" data-tip="${name}: ${v.pct ?? "–"}% said true (${v.nLabel || `${v.n} judgments`})">
             <div class="bar bar-${cls}" style="height:${v.pct ?? 0}%"><span class="bar-val">${v.pct ?? "–"}%</span></div>
           </div>`).join("")}
@@ -51,11 +51,13 @@ function draw() {
   $("countSub").textContent = `finished · ${s.nJoined} joined`;
   if (!revealed) return;
 
-  bars($("mainChart"), [{ label: "Our class", repeated: s.repeated, new: s.new },
-                        { label: "Fazio et al. (2015), Exp. 2", repeated: { pct: 62, nLabel: "published, 40 participants" }, new: { pct: 56, nLabel: "published, 40 participants" } }]);
+  // Overall repetition effect (truths and falsehoods pooled), like Fazio's 62% vs 56%.
+  const f = (v) => (v.pct == null ? "–" : `${v.pct}%`);
+  $("headline").innerHTML = `Overall: <b>repeated ${f(s.repeated)}</b> vs <b>new ${f(s.new)}</b> said true
+    <span class="muted">· Fazio et al. (2015), Exp. 2: 62% vs 56%</span>`;
   $("nNote").textContent = `${s.nIncluded} people included (did both parts)` +
     (s.nExcluded ? ` · ${s.nExcluded} left out (joined late or didn't finish)` : "");
-  bars($("cellChart"), s.byCell.map((g) => ({ label: g.label, repeated: g.repeated, new: g.new, key: g.key })));
+  bars($("cellChart"), s.byCell.map((g) => ({ label: g.label, repeated: g.repeated, new: g.new })));
 }
 
 // Hover tooltip for any bar (laptop mouse).

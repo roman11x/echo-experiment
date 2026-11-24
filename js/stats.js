@@ -52,13 +52,11 @@ export function summarize(participants) {
     repeated: pct(rep),
     new: pct(neu),
     // Fazio-style breakdown: 4 groups, each with repeated vs new.
-    // The key pair is "likely-known false": does seeing an error once make
-    // people accept it even when they probably know better?
     byCell: [
-      ["known", true,  "Likely known · true"],
-      ["unknown", true,  "Likely unknown · true"],
-      ["known", false, "Likely known · false"],
-      ["unknown", false, "Likely unknown · false"],
+      ["unknown", true,  "Likely unknown"],   // Figure 4 order: Truth (unknown, known),
+      ["known",   true,  "Likely known"],
+      ["unknown", false, "Likely unknown"],   // then Falsehood (unknown, known)
+      ["known",   false, "Likely known"],
     ].map(([k, t, label]) => ({
       label, key: `${k}-${t}`,
       repeated: pct(rep.filter((r) => r.known === k && r.truth === t)),

@@ -31,19 +31,18 @@
       <section id="results" hidden>
         <article class="post">
           <h1 class="res-title">How often did we say "true"?</h1>
+          <!-- Overall effect as one line, the way Fazio reports it in the text -->
+          <p class="headline" id="headline"></p>
           <div class="legend">
-            <span><i class="sw sw-rep"></i>Posts seen in part 1</span>
             <span><i class="sw sw-new"></i>New posts</span>
+            <span><i class="sw sw-rep"></i>Repeated (seen in part 1)</span>
           </div>
-          <div class="chart" id="mainChart"></div>
+          <!-- Same layout as Fazio's Figure 4: Truth (unknown, known) | Falsehood (unknown, known) -->
+          <div class="chart fig4" id="cellChart"></div>
+          <div class="supergroups"><span>True statements</span><span>False statements</span></div>
           <p class="muted small" id="nNote"></p>
-        </article>
-
-        <article class="post">
-          <h2>Split by statement type (as in Fazio's figure)</h2>
-          <p class="muted small">"Likely known" = our estimate per statement, like Fazio's Exp. 2 norms; nobody's own knowledge was tested.
-          The key pair: <b>likely known · false</b>. Few judgments per bar, so expect noise.</p>
-          <div class="chart cell-chart" id="cellChart"></div>
+          <p class="muted small">"Likely known" is our estimate per statement, as Fazio's Exp. 2 used norms; nobody's own knowledge was tested.
+          Axis runs 0–100%. Few answers per bar, so expect noise.</p>
         </article>
         <button class="link" id="hide">Hide results</button>
       </section>
