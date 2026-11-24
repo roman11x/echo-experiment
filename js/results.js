@@ -29,7 +29,7 @@ $("hide").onclick = () => updateDoc(sessionRef, { revealed: false });
 // Values are printed on the bars, so colour never carries the meaning alone.
 function bars(el, groups, { reference } = {}) {
   el.innerHTML = groups.map((g) => `
-    <div class="group">
+    <div class="group${g.key === "known-false" ? " key-group" : ""}">
       <div class="bars">
         ${[["rep", "Seen in part 1", g.repeated], ["new", "New", g.new]].map(([cls, name, v]) => `
           <div class="bar-col" data-tip="${name}: ${v.pct ?? "–"}% said true (${v.nLabel || `${v.n} judgments`})">
@@ -55,8 +55,7 @@ function draw() {
                         { label: "Fazio et al. (2015), Exp. 2", repeated: { pct: 62, nLabel: "published, 40 participants" }, new: { pct: 56, nLabel: "published, 40 participants" } }]);
   $("nNote").textContent = `${s.nIncluded} people included (did both parts)` +
     (s.nExcluded ? ` · ${s.nExcluded} left out (joined late or didn't finish)` : "");
-  bars($("knownChart"), s.byKnown.map((g) => ({ label: g.key, repeated: g.repeated, new: g.new })));
-  bars($("truthChart"), s.byTruth.map((g) => ({ label: g.key, repeated: g.repeated, new: g.new })));
+  bars($("cellChart"), s.byCell.map((g) => ({ label: g.label, repeated: g.repeated, new: g.new, key: g.key })));
 }
 
 // Hover tooltip for any bar (laptop mouse).

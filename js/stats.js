@@ -51,15 +51,18 @@ export function summarize(participants) {
     nJoined: participants.length,
     repeated: pct(rep),
     new: pct(neu),
-    byKnown: ["known", "unknown"].map((k) => ({
-      key: k,
-      repeated: pct(rep.filter((r) => r.known === k)),
-      new: pct(neu.filter((r) => r.known === k)),
-    })),
-    byTruth: [true, false].map((t) => ({
-      key: t ? "true statements" : "false statements",
-      repeated: pct(rep.filter((r) => r.truth === t)),
-      new: pct(neu.filter((r) => r.truth === t)),
+    // Fazio-style breakdown: 4 groups, each with repeated vs new.
+    // The key pair is "likely-known false": does seeing an error once make
+    // people accept it even when they probably know better?
+    byCell: [
+      ["known", true,  "Likely known · true"],
+      ["unknown", true,  "Likely unknown · true"],
+      ["known", false, "Likely known · false"],
+      ["unknown", false, "Likely unknown · false"],
+    ].map(([k, t, label]) => ({
+      label, key: `${k}-${t}`,
+      repeated: pct(rep.filter((r) => r.known === k && r.truth === t)),
+      new: pct(neu.filter((r) => r.known === k && r.truth === t)),
     })),
   };
 }

@@ -24,7 +24,7 @@ export const STATEMENTS = [
   // true · known
   { id: "s01", text: "Mount Everest is the highest mountain in the world above sea level.", truth: true, known: "known", set: "X" },
   { id: "s02", text: "The blue whale is the largest animal alive in the world today.", truth: true, known: "known", set: "X" },
-  { id: "s03", text: "At sea level, pure water boils at 100 degrees Celsius.", truth: true, known: "known", set: "X" },
+  { id: "s03", text: "Canberra is the capital city of Australia.", truth: true, known: "known", set: "X" },
   { id: "s04", text: "The Mona Lisa was painted by the Italian artist Leonardo da Vinci.", truth: true, known: "known", set: "X" },
   // true · unknown
   { id: "s05", text: "Thimphu is the capital city of the small Asian country Bhutan.", truth: true, known: "unknown", set: "X" },
@@ -39,14 +39,14 @@ export const STATEMENTS = [
   // false · unknown
   { id: "s13", text: "The Danube River in Europe flows into the North Sea.", truth: false, known: "unknown", set: "X" },            // Black Sea
   { id: "s14", text: "The emu is a large running bird native to South Africa.", truth: false, known: "unknown", set: "X" },         // Australia
-  { id: "s15", text: "In chemistry, the symbol for the element silver is Si.", truth: false, known: "unknown", set: "X" },          // Ag (Si = silicon)
+  { id: "s15", text: "Sound travels faster through air than through water.", truth: false, known: "unknown", set: "X" },             // ~4x faster in water (replaced silver/Si: IS students know Si = silicon)
   { id: "s16", text: "The first football World Cup was held in Argentina in 1930.", truth: false, known: "unknown", set: "X" },     // Uruguay
 
   // ---- Set Y (16) ----
   // true · known
   { id: "s17", text: "Cairo, on the Nile River, is the capital city of Egypt.", truth: true, known: "known", set: "Y" },
   { id: "s18", text: "The cheetah is the fastest land animal in the world.", truth: true, known: "known", set: "Y" },
-  { id: "s19", text: "Light travels much faster through the air than sound does.", truth: true, known: "known", set: "Y" },
+  { id: "s19", text: "Most species of penguin live in the Southern Hemisphere.", truth: true, known: "known", set: "Y" },
   { id: "s20", text: "The play Romeo and Juliet was written by William Shakespeare.", truth: true, known: "known", set: "Y" },
   // true · unknown
   { id: "s21", text: "The Atacama Desert is located in the north of Chile.", truth: true, known: "unknown", set: "Y" },

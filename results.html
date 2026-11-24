@@ -39,18 +39,12 @@
           <p class="muted small" id="nNote"></p>
         </article>
 
-        <div class="res-grid">
-          <article class="post">
-            <h2>By how well-known the fact is</h2>
-            <p class="muted small">"Known" was estimated by us, as Fazio's Exp. 2 did with norms. Small numbers: noisy.</p>
-            <div class="chart small-chart" id="knownChart"></div>
-          </article>
-          <article class="post">
-            <h2>True vs false statements</h2>
-            <p class="muted small">Small numbers: noisy.</p>
-            <div class="chart small-chart" id="truthChart"></div>
-          </article>
-        </div>
+        <article class="post">
+          <h2>Split by statement type (as in Fazio's figure)</h2>
+          <p class="muted small">"Likely known" = our estimate per statement, like Fazio's Exp. 2 norms; nobody's own knowledge was tested.
+          The key pair: <b>likely known · false</b>. Few judgments per bar, so expect noise.</p>
+          <div class="chart cell-chart" id="cellChart"></div>
+        </article>
         <button class="link" id="hide">Hide results</button>
       </section>
     </div>
