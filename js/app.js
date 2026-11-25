@@ -20,6 +20,7 @@ const main = document.getElementById("main");       // where screens are drawn
 const bar = document.getElementById("bar");         // answer buttons above the nav bar
 const counter = document.getElementById("counter"); // "01 / 16" in the header
 const byId = Object.fromEntries(STATEMENTS.map((s) => [s.id, s])); // id -> statement
+const posterBy = Object.fromEntries(POSTERS.map((p) => [p.handle, p])); // handle -> account
 
 let uid = null;       // this participant's anonymous Firebase id
 let state = null;     // this participant's document (null = not joined yet)
@@ -131,7 +132,7 @@ async function runPhase(phase, order, minMs) {
     setCounter(i + 1, order.length);
     const { answer, rt } = await showPost({
       root: main, bar, statement: byId[id],
-      poster: POSTERS[i % POSTERS.length],                // poster by feed position
+      poster: posterBy[byId[id].poster],                  // fixed account per statement
       mode: phase, minMs,
     });
     state[phase][id] = { a: answer, rt };                 // local copy
@@ -212,7 +213,7 @@ async function run() {
     await notice({
       title: "Part 2",
       body: `<p>Now you'll see ${state.order2.length} posts. Some are true and some are false.</p>
-             <p>For each post, choose <b class="t-true">✓ True</b> or <b class="t-false">✕ Not true</b>.</p>`,
+             <p>Is the main claim in this post true? For each post, choose <b class="t-true">✓ True</b> or <b class="t-false">✕ Not true</b>.</p>`,
       button: "Start",
     });
     setStage("p2");

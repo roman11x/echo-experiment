@@ -30,6 +30,10 @@ const MODES = {
 const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+// Post age ("3h") derived from the id, so a repeated post shows the same age
+// in both phases instead of a new random one: "s07" -> 1..11.
+const postAge = (id) => 1 + (parseInt(id.slice(1), 10) * 7) % 11;
+
 // Initials for the round avatar: "Maya Levi" -> "ML".
 export const initials = (name) => name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
@@ -63,7 +67,7 @@ export function showPost({ root, bar, statement, poster, mode, minMs }) {
           ${avatarHTML(poster)}
           <div class="who">
             <span class="name">${esc(poster.name)}</span>
-            <span class="meta">@${esc(poster.handle)} · ${1 + Math.floor(Math.random() * 11)}h</span>
+            <span class="meta">@${esc(poster.handle)} · ${postAge(statement.id)}h</span>
           </div>
           <span class="dots" aria-hidden="true">•••</span>
         </header>
