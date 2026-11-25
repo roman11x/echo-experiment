@@ -9,6 +9,8 @@
 //   known – "known" or "unknown": OUR estimate of whether students know it
 //           (Fazio Exp. 2 did the same with 1980 norms; no knowledge check)
 //   poster – handle of the account that posts it (fixed in both phases)
+//   claim, fix – FALSE items only: the short claim and its correction, shown
+//           on the final screen as a fact-check (**word** = bold)
 //   set   – "X" or "Y": the two halves used for counterbalancing.
 //           List A shows set X in Phase 1 (so X = repeated, Y = new);
 //           List B shows set Y in Phase 1 (so Y = repeated, X = new).
@@ -33,15 +35,23 @@ export const STATEMENTS = [
   { id: "s07", text: "Helium is the second most common element in the universe.", truth: true, known: "unknown", set: "X", poster: "quickfacts" },
   { id: "s08", text: "Started a food history book on the train. Chapter one: the potato was first grown as a food crop in South America.", truth: true, known: "unknown", set: "X", poster: "talc" },
   // false · known            (real answer in the comment)
-  { id: "s09", text: "The ancient Colosseum arena stands in the center of Naples.", truth: false, known: "known", set: "X", poster: "dailytrivia" },        // Rome
-  { id: "s10", text: "My little brother's school project is on the giant panda, a wild animal native to Japan. Our living room is now full of bamboo drawings 🐼", truth: false, known: "known", set: "X", poster: "mayal" },                 // China
-  { id: "s11", text: "Venus is the planet that is closest to the Sun.", truth: false, known: "known", set: "X", poster: "factcorner" },                  // Mercury
-  { id: "s12", text: "Physics exam tomorrow and I'm stuck on the theory of relativity, which Isaac Newton developed. Wish me luck.", truth: false, known: "known", set: "X", poster: "noamk" }, // Einstein
+  { id: "s09", text: "The ancient Colosseum arena stands in the center of Naples.", truth: false, known: "known", set: "X", poster: "dailytrivia",
+    claim: "The Colosseum is in Naples.", fix: "It's in **Rome**." },        // Rome
+  { id: "s10", text: "My little brother's school project is on the giant panda, a wild animal native to Japan. Our living room is now full of bamboo drawings 🐼", truth: false, known: "known", set: "X", poster: "mayal",
+    claim: "The giant panda is native to Japan.", fix: "It's native to **China**." },                 // China
+  { id: "s11", text: "Venus is the planet that is closest to the Sun.", truth: false, known: "known", set: "X", poster: "factcorner",
+    claim: "Venus is the planet closest to the Sun.", fix: "It's **Mercury**." },                  // Mercury
+  { id: "s12", text: "Physics exam tomorrow and I'm stuck on the theory of relativity, which Isaac Newton developed. Wish me luck.", truth: false, known: "known", set: "X", poster: "noamk",
+    claim: "Isaac Newton developed the theory of relativity.", fix: "It was **Albert Einstein**." }, // Einstein
   // false · unknown
-  { id: "s13", text: "Planning a cycling trip along the Danube this summer 🚲 The river flows into the North Sea.", truth: false, known: "unknown", set: "X", poster: "shirab" },            // Black Sea
-  { id: "s14", text: "The emu is a large running bird native to South Africa.", truth: false, known: "unknown", set: "X", poster: "didyouknow" },         // Australia
-  { id: "s15", text: "Sound travels faster through air than through water.", truth: false, known: "unknown", set: "X", poster: "quickfacts" },             // ~4x faster in water (replaced silver/Si: IS students know Si = silicon)
-  { id: "s16", text: "Watching a football documentary tonight ⚽ The first World Cup was held in Argentina in 1930.", truth: false, known: "unknown", set: "X", poster: "talc" },     // Uruguay
+  { id: "s13", text: "Planning a cycling trip along the Danube this summer 🚲 The river flows into the North Sea.", truth: false, known: "unknown", set: "X", poster: "shirab",
+    claim: "The Danube flows into the North Sea.", fix: "It flows into the **Black Sea**." },            // Black Sea
+  { id: "s14", text: "The emu is a large running bird native to South Africa.", truth: false, known: "unknown", set: "X", poster: "didyouknow",
+    claim: "The emu is native to South Africa.", fix: "It's native to **Australia**." },         // Australia
+  { id: "s15", text: "Sound travels faster through air than through water.", truth: false, known: "unknown", set: "X", poster: "quickfacts",
+    claim: "Sound travels faster through air than water.", fix: "It's about **4× faster in water**." },             // ~4x faster in water (replaced silver/Si: IS students know Si = silicon)
+  { id: "s16", text: "Watching a football documentary tonight ⚽ The first World Cup was held in Argentina in 1930.", truth: false, known: "unknown", set: "X", poster: "talc",
+    claim: "The first World Cup (1930) was in Argentina.", fix: "It was in **Uruguay**." },     // Uruguay
 
   // ---- Set Y (16) ----
   // true · known
@@ -55,15 +65,23 @@ export const STATEMENTS = [
   { id: "s23", text: "Bronze is a metal made mostly by mixing copper and tin.", truth: true, known: "unknown", set: "Y", poster: "dailytrivia" },
   { id: "s24", text: "The first modern Olympic Games were held in Athens in 1896.", truth: true, known: "unknown", set: "Y", poster: "factcorner" },    // may be known: check in pre-test
   // false · known
-  { id: "s25", text: "The Statue of Liberty in New York was a gift from England.", truth: false, known: "known", set: "Y", poster: "didyouknow" },        // France
-  { id: "s26", text: "A whole weekend in Lisbon ✈️ I've wanted to visit the capital of Spain for ages.", truth: false, known: "known", set: "Y", poster: "shirab" },                              // Madrid (replaced "bats are birds": too absurd)
-  { id: "s27", text: "Watching old Moon landing footage with Dad 🌕 Buzz Aldrin was the first person to walk on the Moon.", truth: false, known: "known", set: "Y", poster: "talc" },             // Neil Armstrong
-  { id: "s28", text: "The famous painting The Starry Night was made by Claude Monet.", truth: false, known: "known", set: "Y", poster: "quickfacts" },    // Van Gogh
+  { id: "s25", text: "The Statue of Liberty in New York was a gift from England.", truth: false, known: "known", set: "Y", poster: "didyouknow",
+    claim: "The Statue of Liberty was a gift from England.", fix: "It was a gift from **France**." },        // France
+  { id: "s26", text: "A whole weekend in Lisbon ✈️ I've wanted to visit the capital of Spain for ages.", truth: false, known: "known", set: "Y", poster: "shirab",
+    claim: "Lisbon is the capital of Spain.", fix: "Madrid is. Lisbon is the capital of **Portugal**." },                              // Madrid (replaced "bats are birds": too absurd)
+  { id: "s27", text: "Watching old Moon landing footage with Dad 🌕 Buzz Aldrin was the first person to walk on the Moon.", truth: false, known: "known", set: "Y", poster: "talc",
+    claim: "Buzz Aldrin was the first person on the Moon.", fix: "It was **Neil Armstrong**. Aldrin was second." },             // Neil Armstrong
+  { id: "s28", text: "The famous painting The Starry Night was made by Claude Monet.", truth: false, known: "known", set: "Y", poster: "quickfacts",
+    claim: "Monet painted The Starry Night.", fix: "It was **Vincent van Gogh**." },    // Van Gogh
   // false · unknown
-  { id: "s29", text: "Yangon is the capital city of the Asian country Laos.", truth: false, known: "unknown", set: "Y", poster: "dailytrivia" },           // Vientiane
-  { id: "s30", text: "There's a new baby tapir at the zoo. The tapir is a close relative of the wild pig, and this one is tiny.", truth: false, known: "unknown", set: "Y", poster: "mayal" },                  // closer to horses/rhinos
-  { id: "s31", text: "The planet Uranus was discovered by the scientist Galileo Galilei.", truth: false, known: "unknown", set: "Y", poster: "factcorner" }, // William Herschel
-  { id: "s32", text: "Third coffee of the day ☕ Fun fact for the caffeine crew: the coffee plant originally comes from the forests of Brazil.", truth: false, known: "unknown", set: "Y", poster: "noamk" },   // Ethiopia
+  { id: "s29", text: "Yangon is the capital city of the Asian country Laos.", truth: false, known: "unknown", set: "Y", poster: "dailytrivia",
+    claim: "Yangon is the capital of Laos.", fix: "**Vientiane** is. Yangon is in Myanmar." },           // Vientiane
+  { id: "s30", text: "There's a new baby tapir at the zoo. The tapir is a close relative of the wild pig, and this one is tiny.", truth: false, known: "unknown", set: "Y", poster: "mayal",
+    claim: "The tapir is a close relative of the wild pig.", fix: "It's closer to **horses and rhinos**." },                  // closer to horses/rhinos
+  { id: "s31", text: "The planet Uranus was discovered by the scientist Galileo Galilei.", truth: false, known: "unknown", set: "Y", poster: "factcorner",
+    claim: "Galileo discovered Uranus.", fix: "It was **William Herschel**, in 1781." }, // William Herschel
+  { id: "s32", text: "Third coffee of the day ☕ Fun fact for the caffeine crew: the coffee plant originally comes from the forests of Brazil.", truth: false, known: "unknown", set: "Y", poster: "noamk",
+    claim: "The coffee plant comes from Brazil.", fix: "It comes from **Ethiopia**." },   // Ethiopia
 
   // ---- Spares: swap like for like (same truth + known); keep the replaced item's id and set ----
   // { text: "Jupiter is the largest planet in our solar system.", truth: true, known: "known" },

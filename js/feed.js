@@ -27,7 +27,7 @@ const MODES = {
 };
 
 // Escape text before putting it into HTML, so a statement can never inject markup.
-const esc = (s) =>
+export const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 // Post age ("3h") derived from the id, so a repeated post shows the same age

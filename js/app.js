@@ -10,7 +10,7 @@
 
 import { STATEMENTS, POSTERS } from "../data/statements.js";
 import { MIN_VIEW_MS_P1, MIN_VIEW_MS_P2, STORAGE_KEY } from "./config.js";
-import { showPost, avatarHTML } from "./feed.js";
+import { showPost, avatarHTML, esc } from "./feed.js";
 import {
   auth, db, sessionRef, participantRef, currentUser, signInAnonymously,
   getDoc, updateDoc, onSnapshot, runTransaction, serverTimestamp,
@@ -143,28 +143,48 @@ async function runPhase(phase, order, minMs) {
 function setStage(stage) { state.stage = stage; persist({ stage }); }
 
 // ---------------------------------------------------------------------------
-// Personal summary, shown only on this phone. Shows the repetition split,
-// with the honest caveat that one person's numbers are mostly chance.
+// Final screen, shown only on this phone: a score split by true/false posts,
+// then a fact-check of every false post this person believed, each tagged
+// "seen in Part 1" if it was repeated. No repeated-vs-new numbers: with 8 vs 8
+// false posts, one person's split is mostly luck; the class result counts.
 // ---------------------------------------------------------------------------
+// Escape text, then turn **word** into bold (corrections come from our own data).
+const fmt = (t) => esc(t).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+
 function wrapped() {
-  if (state.late) return `<p>You joined after part 1, so your answers aren't part of the comparison, but thanks for taking part!</p>`;
-  const seen = new Set(state.order1);
-  let seenTrue = 0, newTrue = 0;
+  const seen = new Set(state.late ? [] : state.order1);  // late joiners saw no Part 1
+  let trueYes = 0, falseCaught = 0;                     // the two scores
+  const believed = [];                                  // false posts marked "true"
   for (const [id, { a }] of Object.entries(state.p2)) {
-    if (a !== "true") continue;
-    if (seen.has(id)) seenTrue++; else newTrue++;
+    const s = byId[id];
+    if (s.truth && a === "true") trueYes++;             // true post, said True
+    if (!s.truth && a !== "true") falseCaught++;        // false post, said Not true
+    if (!s.truth && a === "true") believed.push(s);     // false post they fell for
   }
-  const nSeen = state.order1.length, nNew = state.order2.length - nSeen;
+  const nTrue = STATEMENTS.filter((s) => s.truth).length;
+  const nFalse = STATEMENTS.length - nTrue;
+  // Repeated ones first, so the "seen in Part 1" tags sit together.
+  believed.sort((x, y) => seen.has(y.id) - seen.has(x.id));
+  const nSeen = believed.filter((s) => seen.has(s.id)).length;
+
+  const list = believed.length === 0
+    ? `<p><b>You didn't fall for any of the false posts.</b></p>`
+    : `<p><b>You believed ${believed.length} false post${believed.length > 1 ? "s" : ""}.</b>${
+        state.late ? "" : ` ${nSeen} of them you'd already seen in Part 1.`}</p>
+       <ul class="factcheck">${believed.map((s) => `
+         <li><span class="fc-claim">${esc(s.claim)}</span>
+             <span class="fc-fix">→ ${fmt(s.fix)}</span>${
+             seen.has(s.id) ? `<span class="fc-seen">seen in Part 1</span>` : ""}</li>`).join("")}
+       </ul>`;
+
   return `
-    <p>Some posts in part 2 were ones you'd already scrolled past in part 1. Here's how you judged them:</p>
     <div class="wrapped">
-      <div class="wrap-row"><span class="wrap-label">Posts you'd seen before</span>
-        <span class="wrap-num">${seenTrue}<small> / ${nSeen}</small></span><span class="wrap-sub">marked true</span></div>
-      <div class="wrap-row"><span class="wrap-label">New posts</span>
-        <span class="wrap-num">${newTrue}<small> / ${nNew}</small></span><span class="wrap-sub">marked true</span></div>
+      <div class="wrap-row"><span class="wrap-label">True posts</span>
+        <span class="wrap-num">${trueYes}<small> / ${nTrue}</small></span><span class="wrap-sub">you said True</span></div>
+      <div class="wrap-row"><span class="wrap-label">False posts</span>
+        <span class="wrap-num">${falseCaught}<small> / ${nFalse}</small></span><span class="wrap-sub">you caught</span></div>
     </div>
-    <p class="muted small">Both groups had the same mix of true and false posts. With 16 posts each,
-    one person's gap is mostly chance; the class result is what counts.</p>`;
+    ${list}`;
 }
 
 // ---------------------------------------------------------------------------

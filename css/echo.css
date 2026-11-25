@@ -185,6 +185,13 @@ svg { width: 22px; height: 22px; }
 .wrap-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
 .wrap-num small { font-size: 1rem; color: var(--muted); font-weight: 600; }
 .wrap-sub { font-size: .85rem; color: var(--muted); }
+/* Final-screen fact-check of the false posts a person believed */
+.factcheck { list-style: none; padding: 0; margin: 8px 0 14px; display: flex; flex-direction: column; gap: 8px; }
+.factcheck li { background: var(--panel); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; text-align: left; }
+.fc-claim { text-decoration: line-through; color: var(--muted); }   /* the false claim, struck out */
+.fc-fix { color: var(--text); }                                     /* the correction */
+.fc-seen { align-self: flex-start; margin-top: 4px; font-size: .78rem; font-weight: 700; color: var(--accent);
+           border: 1px solid currentColor; border-radius: 999px; padding: 1px 8px; }
 
 /* ======================================================================== */
 /* Presenter pages (admin + results)                                        */
